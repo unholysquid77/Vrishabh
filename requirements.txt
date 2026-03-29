@@ -1,0 +1,32 @@
+# Core
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic
+
+# AI / LLM
+openai
+rlms
+
+# Market data
+yfinance
+pandas
+numpy
+pyarrow        # parquet caching for price data
+
+# Technical analysis
+# TA-Lib requires C library — install separately:
+#   Windows: pip install TA_Lib‑0.4.28‑cp311‑cp311‑win_amd64.whl (from unofficial binaries)
+#   Linux:   apt-get install libta-lib0-dev && pip install TA-Lib
+TA-Lib
+# PatternPy structural chart patterns (installs as `tradingpatterns` module)
+# pip install git+https://github.com/keithorange/PatternPy.git
+patternpy
+
+# News APIs
+requests
+newsdataapi
+
+# Graph serialization
+# (stdlib json is sufficient; orjson for speed if desired)
+# orjson

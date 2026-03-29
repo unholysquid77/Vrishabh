@@ -1,0 +1,53 @@
+# Environment
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# Data — graph files are large; exclude generated/cached data
+data/graph.json
+data/global_graph.json
+data/india_graph.json
+data/prices/
+data/news_cache/
+data/global_cache/
+data/rlm_logs/
+# Keep agentic state files (small, meaningful for demo)
+# data/brief_cache.json  ← intentionally NOT ignored
+# data/watches.json      ← intentionally NOT ignored
+# data/memory.json       ← intentionally NOT ignored
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Temporary
+*.tmp
+*.bak
