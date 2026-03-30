@@ -15,8 +15,11 @@ from typing import Dict, List, Optional
 
 import requests
 
-from ._loader import DEV_MODE, SUVARN_API_URL
-
+try:
+    from ._loader import DEV_MODE, SUVARN_API_URL
+except:
+    from ._loader import SUVARN_API_URL
+    DEV_MODE = False
 # Re-export BSNMResult so callers only need to import from suvarn_client
 from sentiment.bsnm import BSNMEngine as _BSNMEngine, BSNMResult  # noqa: F401
 
