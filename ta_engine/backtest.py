@@ -55,6 +55,12 @@ def run(df: pd.DataFrame, ticker: str = "") -> dict:
     # NaN for the first ~35 bars (MACD warmup) — treat as HOLD
     scores = np.nan_to_num(scores, nan=0.0)
 
+    # Mask warmup bars so spurious Supertrend initialization (+1 before ATR is
+    # ready) doesn't produce a fake BUY signal on bar 1.  All indicators are
+    # warm by bar 40 (MACD needs 34 bars, Supertrend/ADX need 14-28 bars).
+    WARMUP = 40
+    scores[:WARMUP] = 0.0
+
     # ── Simulation ────────────────────────────────────────────────────────────
     # Signal at bar i → entry at bar i+1 (open price) → no look-ahead
     cash        = 100.0      # normalised starting capital (equity starts at 100)

@@ -21,8 +21,8 @@ import talib
 from typing import Optional
 
 
-BUY_THRESHOLD  = 1.5
-SELL_THRESHOLD = 0.0
+BUY_THRESHOLD  =  1.5
+SELL_THRESHOLD = -1.0   # was 0.0 — caused any neutral score to register as SELL
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -123,6 +123,10 @@ def _compute_components(df: pd.DataFrame) -> dict:
         adx_comp = pd.Series(0.0, index=idx)
 
     # ── Bollinger mean-reversion ───────────────────────────────────────────
+    # BB is mean-reversion logic — it conflicts with trend-following (MACD/ST/ADX)
+    # in strong trends where price legitimately hugs the upper/lower band.
+    # Dampen BB contribution proportionally to ADX trend strength so it only
+    # fires meaningfully in ranging/choppy markets.
     try:
         upper_bb, _, lower_bb = talib.BBANDS(close, timeperiod=20, nbdevup=2, nbdevdn=2, matype=0)
         upper_s    = _s(upper_bb, idx)
@@ -130,7 +134,11 @@ def _compute_components(df: pd.DataFrame) -> dict:
         band_range = (upper_s - lower_s).replace(0, np.nan)
         pct_b      = (close - lower_s) / band_range
         bb_raw     = -(pct_b - 0.5) * 2.0
-        bb_comp    = bb_raw.where((pct_b - 0.5).abs() > 0.3, 0.0).fillna(0.0) * 0.5
+        bb_base    = bb_raw.where((pct_b - 0.5).abs() > 0.3, 0.0).fillna(0.0) * 0.5
+        # Scale down BB when ADX shows a strong trend (strength already computed above)
+        # In a strong trend (strength→1) BB contributes ~0; in ranging (strength→0) full weight
+        trend_dampen = (1.0 - strength).clip(0.0, 1.0)
+        bb_comp    = bb_base * trend_dampen
     except Exception:
         bb_comp = pd.Series(0.0, index=idx)
 

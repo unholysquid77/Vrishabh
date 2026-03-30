@@ -178,7 +178,7 @@ class OpportunityRadar:
                     alert_type       = "CHART_PATTERN",
                     title            = f"{sig.ticker}: {pattern['name']} Detected",
                     body             = pattern["explanation"],
-                    strength         = float(pattern["strength"]) * sig.confidence,
+                    strength         = float(pattern["strength"]) * max(sig.confidence, 0.65),
                     direction        = direction,
                     suggested_action = action,
                     evidence         = [

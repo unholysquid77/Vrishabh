@@ -2604,12 +2604,12 @@ async function _loadBacktest(ticker) {
 
     // Strategy equity (green area)
     const eqSeries = _btChart.addAreaSeries({
-      lineColor: 'var(--green)', topColor: 'rgba(46,204,113,0.18)',
-      bottomColor: 'rgba(46,204,113,0)', lineWidth: 1.5,
+      lineColor: '#2ecc71', topColor: 'rgba(46,204,113,0.25)',
+      bottomColor: 'rgba(46,204,113,0.02)', lineWidth: 1.5,
     });
     // Buy-and-hold (muted line)
     const bhSeries = _btChart.addLineSeries({
-      color: '#334155', lineWidth: 1, lineStyle: 2,  // dashed
+      color: '#64748b', lineWidth: 1, lineStyle: 2,  // dashed
     });
 
     const eqData = bt.equity_curve.map(p => ({ time: p.time, value: p.value }));
@@ -3783,7 +3783,6 @@ _pfLoad();
 function addPortfolioHolding() {
   const t = (document.getElementById('pf-ticker').value || '').trim().toUpperCase();
   const q = parseFloat(document.getElementById('pf-qty').value) || 0;
-  const c = parseFloat(document.getElementById('pf-cost').value) || 0;
   if (!t) return;
   _pfHoldings[t] = { quantity: q };
   _pfSave();
@@ -4016,8 +4015,8 @@ function _renderIntelChart(prices) {
     crosshair: { mode: LightweightCharts.CrosshairMode.Magnet },
   });
   const series = _intelChartRef.addAreaSeries({
-    lineColor: 'var(--accent)', topColor: 'rgba(79,142,247,0.2)',
-    bottomColor: 'rgba(79,142,247,0)', lineWidth: 1.5,
+    lineColor: '#4f8ef7', topColor: 'rgba(79,142,247,0.25)',
+    bottomColor: 'rgba(79,142,247,0.02)', lineWidth: 1.5,
   });
   const data = prices
     .filter(p => p.date && p.close != null)
